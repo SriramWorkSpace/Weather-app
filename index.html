@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Weather Application</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="bg-dark">
+
+    <!--This took longer than i thought 🥲-->
+
+    <!-- Floating particles -->
+    <div class="floating-particles" id="particles"></div>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-cloud-sun"></i> Weather
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#helpModal">How to use?</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4 d-flex flex-column justify-content-center min-vh-100">
+
+        <!--Sriram-->
+      <!-- Search Section -->
+      <div class="row justify-content-center mb-4">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+          <div class="card shadow">
+            <div class="card-body">
+              <h5 class="card-title text-center mb-3">
+                <i class="bi bi-search"></i> Search Weather
+              </h5>
+              <form id="weatherForm">
+                <div class="row g-3">
+                  <div class="col-md-4">
+                    <label for="latitude" class="form-label">Latitude</label>
+                    <input type="number" class="form-control" id="latitude" step="any" placeholder="e.g., 28.6139" required>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="longitude" class="form-label">Longitude</label>
+                    <input type="number" class="form-control" id="longitude" step="any" placeholder="e.g., 77.2090" required>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="endpoint" class="form-label">Weather Type</label>
+                    <select class="form-select" id="endpoint" required>
+                      <option value="daily">Daily Forecast (5 days)</option>
+                      <option value="hourly">Hourly Forecast (24 hours)</option>
+                      <option value="current">Current Weather</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                      <i class="bi bi-search"></i> Get Weather
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Location Buttons -->
+      <div class="row justify-content-center mb-4">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+          <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <button class="btn btn-outline-primary quick-location" data-lat="28.6139" data-lon="77.2090" data-name="Delhi">
+              <i class="bi bi-geo-alt"></i> Delhi
+            </button>
+            <button class="btn btn-outline-primary quick-location" data-lat="47.6062" data-lon="-122.3321" data-name="Seattle">
+              <i class="bi bi-geo-alt"></i> Seattle
+            </button>
+            <button class="btn btn-outline-primary quick-location" data-lat="1.3521" data-lon="103.8198" data-name="Singapore">
+              <i class="bi bi-geo-alt"></i> Singapore
+            </button>
+            <button class="btn btn-outline-primary quick-location" data-lat="40.7128" data-lon="-74.0060" data-name="New York">
+              <i class="bi bi-geo-alt"></i> New York
+            </button>
+            <button class="btn btn-outline-primary quick-location" data-lat="13.6288" data-lon="79.4192" data-name="Tirupati">
+              <i class="bi bi-geo-alt"></i> Tirupati
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading Spinner -->
+      <div class="row justify-content-center loading" id="loadingSpinner">
+        <div class="col-lg-8 col-md-10 col-sm-12 text-center">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2">Fetching weather data...</p>
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      <div class="row justify-content-center error-message" id="errorMessage">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+          <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle"></i>
+            <span id="errorText"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weather Results -->
+      <div id="weatherResults" class="d-flex justify-content-center"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="container">
+          <h5>
+            <i class="bi bi-cloud-sun"></i> Weather Application
+          </h5>
+          <p>Get accurate weather information for any location around the world</p>
+          <p>Made with <i class="bi bi-heart-fill text-danger"></i> by <span class="creator-name">Sriram</span></p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Help Modal -->
+    <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="helpModalLabel">
+              <i class="bi bi-question-circle"></i> How to Use Weather App
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <h6>Getting Started:</h6>
+            <ul>
+              <li>Enter latitude and longitude coordinates for any location</li>
+              <li>Choose the type of weather data you want (daily, hourly, or current)</li>
+              <li>Click "Get Weather" to fetch the data</li>
+              <li>Or use the quick location buttons for popular cities</li>
+            </ul>
+            
+            <h6>Weather Types:</h6>
+            <ul>
+              <li><strong>Daily Forecast:</strong> 5-day weather forecast</li>
+              <li><strong>Hourly Forecast:</strong> 24-hour detailed forecast</li>
+              <li><strong>Current Weather:</strong> Current weather conditions</li>
+            </ul>
+            
+            <h6>Finding Coordinates:</h6>
+            <p>You can find latitude and longitude coordinates by:</p>
+            <ul>
+              <li>Searching on Google Maps and right-clicking on a location</li>
+              <li>Using websites like latlong.net</li>
+              <li>Using your device's GPS if available</li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <script>
+      // Create floating particles
+      function createParticles() {
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 20;
+        
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'particle';
+          particle.style.left = Math.random() * 100 + '%';
+          particle.style.animationDelay = Math.random() * 6 + 's';
+          particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+          particlesContainer.appendChild(particle);
+        }
+      }
+      
+      // Initialize particles when page loads
+      document.addEventListener('DOMContentLoaded', function() {
+        createParticles();
+      });
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>
